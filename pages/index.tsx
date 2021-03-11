@@ -60,7 +60,8 @@ const Home = (props: any) => {
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     const cookies = nookies.get(ctx);
-    return await firebaseAdmin.auth().verifyIdToken(cookies.token)
+    try {
+      return await firebaseAdmin.auth().verifyIdToken(cookies.token)
         .then((response) => {
             if (response) {
               const { uid, email } = response;
@@ -83,6 +84,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
             props: {} as never,
           };
         })
+    } catch (error) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/login",
+        },
+        // `as never` is required for correct type inference
+        // by InferGetServerSidePropsType below
+        props: {} as never,
+      };
+    }
 }
 
 export default Home;
