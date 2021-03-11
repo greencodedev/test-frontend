@@ -43,7 +43,7 @@ const Home = (props: any) => {
         <Box align="center">
           <DynamicText ref={textRef}/>
         </Box>
-        <Input placeholder="Please enter" onChange={onChange} width="250px"/>
+        <Input placeholder="Please enter" onChange={onChange} style={{ minWidth: 250 }}/>
         <Flex>
           <Box>
             <Button colorScheme="blue" onClick={() => goNextPage('./blogs')}>Go to Blogs</Button>
