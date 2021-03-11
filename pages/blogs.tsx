@@ -125,6 +125,9 @@ const Blogs = (props: any) => {
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     const cookies = nookies.get(ctx);
     try {
+      if (!cookies.token) {
+        throw "no firebase token";
+      }
       return await firebaseAdmin.auth().verifyIdToken(cookies.token)
         .then(async (response) => {
             if (response) {
@@ -138,14 +141,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
               };
             }
         })
-        .catch(() => {
-          return {
-            redirect: {
-              permanent: false,
-              destination: "/login",
-            },
-            props: {} as never,
-          };
+        .catch((error) => {
+          throw error;
         })
     } catch (error) {
       return {
