@@ -114,6 +114,12 @@
   height: 1em;
 }
 
+.blogContainer {
+  margin: auto;
+  margin-top: 40px;
+  max-width: 1440px;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;

@@ -15,7 +15,7 @@ const DynamicText = forwardRef((props: any, ref: any) => {
 
   
 
-  return <Text fontSize="3xl">{value}</Text>;
+  return <Text wordBreak="break-all" fontSize="3xl">{value}</Text>;
 });
 
 export default DynamicText;
