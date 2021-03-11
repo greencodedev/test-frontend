@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Head from "next/head";
 import { GetServerSidePropsContext } from "next";
 import nookies from "nookies";
-import { Input, Stack, Box, Text, HStack, Button, Spacer, Flex, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Input, Stack, Box, Text, HStack, Button, Spacer, Flex, InputGroup, InputRightElement, Alert, AlertIcon, AlertTitle, AlertDescription, CloseButton } from "@chakra-ui/react";
 
 import { firebaseClient } from "../config/firebaseClient";
 import { firebaseAdmin } from "../config/firebaseAdmin";
@@ -19,6 +19,7 @@ const Login = (props: any) => {
     const [errorEmail, setErrorEmailFlag] = useState(false);
     const [errorPwd, setErrorPwdFlag] = useState(false);
     const [errorConfirm, setErrorConfirmFlag] = useState(false);
+    const [error, setError] = useState("");
 
     const login = async () => {
         if (email == "") {
@@ -28,8 +29,20 @@ const Login = (props: any) => {
             setErrorPwdFlag(true);
         }
         if (email != "" && password != "") {
-            await firebaseClient.auth().signInWithEmailAndPassword(email, password);
-            window.location.href = '/';
+            await firebaseClient.auth().signInWithEmailAndPassword(email, password)
+            .then(() => {
+                // Success 
+                window.location.href = '/';
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                if (errorCode === 'auth/wrong-password') {
+                    setError("You entered wrong password");
+                } else {
+                    setError('You entered wrong email and password');
+                }
+            });
+            
         }
     }
 
@@ -46,8 +59,13 @@ const Login = (props: any) => {
         if (email != "" && password != "" && password == confirm) {
             await firebaseClient
                 .auth()
-                .createUserWithEmailAndPassword(email, password);
-            window.location.href = '/';
+                .createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.href = '/';
+                })
+                .catch(() => {
+                    setError("Register was failed, please try again later.");
+                });
         }
     }
 
@@ -69,6 +87,14 @@ const Login = (props: any) => {
 
             { flag 
                 ? <Stack spacing={8}>
+                    { error != "" &&
+                        <Alert status="error">
+                            <AlertIcon />
+                            <AlertTitle mr={2}>Failed!</AlertTitle>
+                            <AlertDescription style={{ marginRight: 30 }}>{error}</AlertDescription>
+                            <CloseButton position="absolute" right="8px" top="8px" onClick={() => setError("")}/>
+                        </Alert>
+                    }
                     <Box align="center">
                         <Text fontSize="3xl">Sign In</Text>
                     </Box>
