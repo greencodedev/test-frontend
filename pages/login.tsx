@@ -171,23 +171,31 @@ const Login = (props: any) => {
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     const cookies = nookies.get(ctx);
-    return await firebaseAdmin.auth().verifyIdToken(cookies.token)
-        .then((token) => {
-            if (token) {
-                return {
-                    redirect: {
-                        permanent: false,
-                        destination: "/",
-                    },
-                    props: {} as never,
-                };
-            }
-        })
-        .catch((error) => {
-            return {
-                props: {} as never,
-            };
-        })
+    try {
+        if (!cookies.token) {
+          throw "no firebase token";
+        }   
+        return await firebaseAdmin.auth().verifyIdToken(cookies.token)
+            .then((token) => {
+                if (token) {
+                    return {
+                        redirect: {
+                            permanent: false,
+                            destination: "/",
+                        },
+                        props: {} as never,
+                    };
+                }
+            })
+            .catch((error) => {
+                throw error;
+            })
+    }
+    catch (error) {
+        return {
+            props: {} as never,
+        };
+    }
 }
 
 export default Login;
