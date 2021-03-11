@@ -3,7 +3,7 @@ import { GetServerSidePropsContext } from "next";
 import { useRouter } from 'next/router';
 import nookies from "nookies";
 import Head from "next/head";
-import { Image, Badge, Text, Box, Flex, Button, Spacer, SimpleGrid, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from "@chakra-ui/react";
+import { Image, Text, Box, Flex, Button, Spacer, SimpleGrid, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from "@chakra-ui/react";
 
 import { firebaseAdmin } from "../config/firebaseAdmin";
 import { firebaseClient } from "../config/firebaseClient";
@@ -13,7 +13,7 @@ import styles from "../styles/Home.module.css";
 const Blogs = (props: any) => {
   const router = useRouter();
   const [blogs, setBlogs] = useState(props.blogs);
-  const [selectedBlog, setSelectedBlog] = useState({});
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
@@ -79,6 +79,8 @@ const Blogs = (props: any) => {
               })
             }
         </SimpleGrid>
+        {
+        selectedBlog &&
         <AlertDialog 
           isOpen={isOpen}
           leastDestructiveRef={cancelRef}
@@ -115,7 +117,7 @@ const Blogs = (props: any) => {
             </AlertDialogContent>
           </AlertDialogOverlay>
         </AlertDialog>
-          
+        }
     </Box>
   );
 };
