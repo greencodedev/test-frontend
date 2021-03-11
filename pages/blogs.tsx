@@ -55,29 +55,29 @@ const Blogs = (props: any) => {
   return (
     <Box className={styles.blogContainer}>
         <Head>
-            <title>Coding Test</title>
-            <link rel="icon" href="/favicon.ico" />
+          <title>Coding Test</title>
+          <link rel="icon" href="/favicon.ico" />
         </Head>
 
         <Flex spacing={8}>
-            <Box>
-              <Button colorScheme="blue" onClick={() => goNextPage('./')}>Go Back</Button>
-            </Box>
-            <Spacer />
-            <Box align="center">
-              <Text fontSize="3xl">Blogs</Text>
-            </Box>
-            <Spacer />
-            <Box>
-              <Button colorScheme="blue" onClick={() => signOut()}>Sign Out</Button>
-            </Box>
+          <Box>
+            <Button colorScheme="blue" onClick={() => goNextPage('./')}>Go Back</Button>
+          </Box>
+          <Spacer />
+          <Box align="center">
+            <Text fontSize="3xl">Blogs</Text>
+          </Box>
+          <Spacer />
+          <Box>
+            <Button colorScheme="blue" onClick={() => signOut()}>Sign Out</Button>
+          </Box>
         </Flex>
         <SimpleGrid columns={{sm: 2, md: 3, lg: 4}} spacing="20px" style={{ marginTop: 20 }}>
-            {
-              blogs.map((blog: any, key: any) => {
-                return <Blog data={blog} key={key} onClick={() => showModal(key)}></Blog>
-              })
-            }
+        {
+          blogs.map((blog: any, key: any) => {
+            return <Blog data={blog} key={key} onClick={() => showModal(key)}></Blog>
+          })
+        }
         </SimpleGrid>
         {
         selectedBlog &&
@@ -97,11 +97,11 @@ const Blogs = (props: any) => {
 
                   <Box style={{ marginTop: 20 }}>
                       <Box
-                          mt="1"
-                          fontWeight="semibold"
-                          as="h4"
-                          lineHeight="tight"
-                          isTruncated
+                        mt="1"
+                        fontWeight="semibold"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
                       >
                         Title: {selectedBlog.blog_title}
                       </Box>
@@ -128,7 +128,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         .then(async (response) => {
             if (response) {
               const { uid, email } = response;
-              
               return {
                 props: { 
                   uid,
